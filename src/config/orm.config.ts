@@ -14,4 +14,15 @@ export const ormConfig: TypeOrmModuleOptions = {
   synchronize: false, // tablas ya existen
   timezone: 'Z',
   extra: { dateStrings: true },
+  // Configuración SSL para Aiven
+  ssl:
+    process.env.NODE_ENV === 'production'
+      ? {
+          rejectUnauthorized: false,
+        }
+      : null,
+
+  // Opciones de conexión adicionales para MySQL
+  connectTimeout: 60000,
+  acquireTimeout: 60000,
 };
