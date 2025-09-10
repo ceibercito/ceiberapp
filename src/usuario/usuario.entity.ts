@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Empresa } from '../empresa/empresa.entity';
+import { Rol } from '../rol/rol.entity';
 
 @Entity('usuario')
 export class Usuario {
@@ -24,4 +25,12 @@ export class Usuario {
   @ManyToOne(() => Empresa)
   @JoinColumn({ name: 'empresaId', referencedColumnName: 'empresaId' })
   empresa: Empresa;
+
+  @ManyToMany(() => Rol)
+  @JoinTable({
+    name: 'usuario_rol',
+    joinColumn: { name: 'usuarioId' },
+    inverseJoinColumn: { name: 'rolId' },
+  })
+  roles: Rol[];
 }

@@ -1,4 +1,8 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Empresa } from '../empresa/empresa.entity';
+import { Proveedor } from '../proveedor/proveedor.entity';
+import { AlmacenProducto } from '../almacen-producto/almacen-producto.entity';
+import { VentaProducto } from '../venta-producto/venta-producto.entity';
 
 @Entity('producto')
 export class Producto {
@@ -25,4 +29,25 @@ export class Producto {
 
   @Column({ type: 'binary', length: 16, name: 'proveedorId', nullable: true })
   proveedorId: Buffer | null;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  stockInicial: number;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  stokMinimo: number;
+
+  // Relaciones
+  @ManyToOne(() => Empresa)
+  @JoinColumn({ name: 'empresaId', referencedColumnName: 'empresaId' })
+  empresa: Empresa;
+
+  @ManyToOne(() => Proveedor)
+  @JoinColumn({ name: 'proveedorId', referencedColumnName: 'proveedorId' })
+  proveedor: Proveedor;
+
+  @OneToMany(() => AlmacenProducto, (ap) => ap.productoId)
+  almacenes: AlmacenProducto[];
+
+  @OneToMany(() => VentaProducto, (vp) => vp.productoId)
+  ventas: VentaProducto[];
 }

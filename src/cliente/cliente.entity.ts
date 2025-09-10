@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
+import { Empresa } from '../empresa/empresa.entity';
+import { Venta } from '../venta/venta.entity';
 
 @Entity('cliente')
 export class ClienteEntity {
@@ -8,7 +17,7 @@ export class ClienteEntity {
   @Column({ type: 'binary', length: 16, name: 'empresaId' })
   empresaId: Buffer;
 
-  @Column({ type: 'varchar', length: 255  })
+  @Column({ type: 'varchar', length: 255 })
   nombre: string;
 
   @Column({ type: 'varchar', length: 255 })
@@ -29,4 +38,11 @@ export class ClienteEntity {
     default: 'minorista',
   })
   tipo: 'minorista' | 'mayorista';
+
+  @ManyToOne(() => Empresa, (e) => e.clientes)
+  @JoinColumn({ name: 'empresaId' })
+  empresa: Empresa;
+
+  @OneToMany(() => Venta, (v) => v.clienteId)
+  ventas: Venta[];
 }

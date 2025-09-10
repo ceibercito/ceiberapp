@@ -1,4 +1,13 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+} from 'typeorm';
+import { Empresa } from '../empresa/empresa.entity';
+import { AlmacenProducto } from '../almacen-producto/almacen-producto.entity';
 
 @Entity('almacen')
 export class Almacen {
@@ -19,4 +28,11 @@ export class Almacen {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   responsable: string | null;
+
+  @ManyToOne(() => Empresa, (e) => e.almacenes)
+  @JoinColumn({ name: 'empresaId' })
+  empresa: Empresa;
+
+  @OneToMany(() => AlmacenProducto, (ap) => ap.almacenId)
+  productos: AlmacenProducto[];
 }

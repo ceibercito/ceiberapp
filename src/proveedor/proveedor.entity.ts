@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Empresa } from '../empresa/empresa.entity';
+import { Producto } from '../producto/producto.entity';
 
 @Entity('proveedor')
 export class Proveedor {
@@ -17,4 +19,11 @@ export class Proveedor {
   @Column({ nullable: true }) telefono: string;
 
   @Column({ nullable: true }) direccion: string;
+
+  @ManyToOne(() => Empresa, (e) => e.proveedores)
+  @JoinColumn({ name: 'empresaId' })
+  empresa: Empresa;
+
+  @OneToMany(() => Producto, (p) => p.proveedor)
+  productos: Producto[];
 }

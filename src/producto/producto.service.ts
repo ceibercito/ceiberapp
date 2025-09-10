@@ -22,6 +22,8 @@ export class ProductoService {
       costo: dto.costo,
       codigo: dto.codigo,
       proveedorId: uuidToBin(dto.proveedorId),
+      stockInicial: dto.stockInicial,
+      stokMinimo: dto.stokMinimo,
     });
     await this.repo.save(entity);
     return { ...entity, productoId: binToUuid(entity.productoId) };

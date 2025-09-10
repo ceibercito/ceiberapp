@@ -1,4 +1,13 @@
-import { Entity, Column, PrimaryColumn, Unique } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  Unique,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Almacen } from '../almacen/almacen.entity';
+import { Producto } from '../producto/producto.entity';
 
 @Entity('almacen_producto')
 @Unique(['almacenId', 'productoId'])
@@ -17,4 +26,12 @@ export class AlmacenProducto {
 
   @Column({ type: 'int', name: 'stock_minimo', default: 0 })
   stockMinimo: number;
+
+  @ManyToOne(() => Almacen, (a) => a.productos)
+  @JoinColumn({ name: 'almacenId' })
+  almacen: Almacen;
+
+  @ManyToOne(() => Producto, (p) => p.almacenes)
+  @JoinColumn({ name: 'productoId' })
+  producto: Producto;
 }

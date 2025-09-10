@@ -1,4 +1,14 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+} from 'typeorm';
+import { Empresa } from '../empresa/empresa.entity';
+import { ClienteEntity } from '../cliente/cliente.entity';
+import { VentaProducto } from '../venta-producto/venta-producto.entity';
 
 @Entity('venta')
 export class Venta {
@@ -23,4 +33,15 @@ export class Venta {
     default: 'pendiente',
   })
   estado: 'pendiente' | 'completada' | 'cancelada';
+
+  @ManyToOne(() => Empresa, (e) => e.ventas)
+  @JoinColumn({ name: 'empresaId' })
+  empresa: Empresa;
+
+  @ManyToOne(() => ClienteEntity, (c) => c.ventas)
+  @JoinColumn({ name: 'clienteId' })
+  cliente: ClienteEntity;
+
+  @OneToMany(() => VentaProducto, (vp) => vp.ventaId)
+  productos: VentaProducto[];
 }
