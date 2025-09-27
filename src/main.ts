@@ -17,6 +17,7 @@ async function bootstrap() {
   console.log(`🚀 Servidor NestJS ejecutándose`);
   console.log(`🚀 Puerto: ${port}`);
   console.log(`🚀 URL: http://localhost:${port}`);
+  console.log('CEIBERAPP');
   console.log('🚀' + '='.repeat(50));
 
   type RouteInfo = { method: string; path: string };
